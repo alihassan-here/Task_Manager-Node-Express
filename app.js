@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
-const taskRoute = require('./routes/tasks');
-const connectDb = require('./config/db')
 require('dotenv').config();
+const connectDb = require('./config/db')
+const taskRoute = require('./routes/tasks');
+const notFound = require('./middleware/not-found');
+const errorHandlerMiddleware = require('./middleware/errorHandler');
 
 
 //MIDDLEWARES
@@ -12,6 +14,9 @@ app.use(express.json());
 
 //ROUTES    
 app.use('/api/v1/tasks', taskRoute);
+
+app.use(notFound);
+app.use(errorHandlerMiddleware);
 
 const PORT = 4000;
 //if out connection with database is successful, then we want to start server.
